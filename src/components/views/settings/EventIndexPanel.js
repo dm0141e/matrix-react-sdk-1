@@ -37,7 +37,7 @@ export default class EventIndexPanel extends React.Component {
         };
     }
 
-    async updateCurrentRoom(room) {
+    updateCurrentRoom = async (room) => {
         const eventIndex = EventIndexPeg.get();
         const stats = await eventIndex.getStats();
 
@@ -51,7 +51,7 @@ export default class EventIndexPanel extends React.Component {
         const eventIndex = EventIndexPeg.get();
 
         if (eventIndex !== null) {
-            eventIndex.removeListener("changedCheckpoint", this.updateCurrentRoom.bind(this));
+            eventIndex.removeListener("changedCheckpoint", this.updateCurrentRoom);
         }
     }
 
@@ -68,7 +68,7 @@ export default class EventIndexPanel extends React.Component {
         let roomCount = 0;
 
         if (eventIndex !== null) {
-            eventIndex.on("changedCheckpoint", this.updateCurrentRoom.bind(this));
+            eventIndex.on("changedCheckpoint", this.updateCurrentRoom);
 
             const stats = await eventIndex.getStats();
             eventIndexSize = stats.size;
