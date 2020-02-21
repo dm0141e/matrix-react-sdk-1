@@ -21,6 +21,8 @@ import Matrix from "matrix-js-sdk";
 
 import url from 'url';
 
+import Mixpanel from './Mixpanel';
+
 export default class Login {
     constructor(hsUrl, isUrl, fallbackHsUrl, opts) {
         this._hsUrl = hsUrl;
@@ -188,6 +190,7 @@ export async function sendLoginRequest(hsUrl, isUrl, loginType, loginParams) {
             console.log(`Overrode IS setting with ${isUrl} from login response`);
         }
     }
+    Mixpanel.identifyLogin(data.user_id);
 
     return {
         homeserverUrl: hsUrl,

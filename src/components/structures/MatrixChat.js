@@ -66,6 +66,7 @@ import { storeRoomAliasInCache } from '../../RoomAliasCache';
 import { defer } from "../../utils/promise";
 import ToastStore from "../../stores/ToastStore";
 import * as StorageManager from "../../utils/StorageManager";
+import Mixpanel from "../../Mixpanel";
 
 /** constants for MatrixChat.state.view */
 export const VIEWS = {
@@ -480,6 +481,7 @@ export default createReactClass({
                 }
                 break;
             case 'logout':
+                Mixpanel.track('Logout');
                 Lifecycle.logout();
                 break;
             case 'require_registration':

@@ -42,6 +42,7 @@ import {_t, _td} from '../../../languageHandler';
 import ContentMessages from '../../../ContentMessages';
 import {Key} from "../../../Keyboard";
 import MatrixClientContext from "../../../contexts/MatrixClientContext";
+import Mixpanel from "../../../Mixpanel";
 
 function addReplyToMessageContent(content, repliedToEvent, permalinkCreator) {
     const replyContent = ReplyThread.makeReplyMixIn(repliedToEvent);
@@ -294,6 +295,8 @@ export default class SendMessageComposer extends React.Component {
                     action: 'reply_to_event',
                     event: null,
                 });
+            } else {
+                Mixpanel.trackMessage();
             }
         }
 
