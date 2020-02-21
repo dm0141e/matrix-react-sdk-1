@@ -577,6 +577,14 @@ export default createReactClass({
             case 'view_indexed_room':
                 this._viewIndexedRoom(payload.roomIndex);
                 break;
+            case 'view_chat_networks': {
+                const ChatNetworksDialog = sdk.getComponent("dialogs.ChatNetworksDialog");
+                Modal.createTrackedDialog('Set Up Chat Networks', '', ChatNetworksDialog);
+
+                // View the welcome or home page if we need something to look at
+                this._viewSomethingBehindModal();
+                break;
+            }
             case 'view_user_settings': {
                 const UserSettingsDialog = sdk.getComponent("dialogs.UserSettingsDialog");
                 Modal.createTrackedDialog('User settings', '', UserSettingsDialog, {},
