@@ -41,6 +41,7 @@ export default class TopLeftMenu extends React.Component {
     constructor() {
         super();
         this.viewHomePage = this.viewHomePage.bind(this);
+        this.openChatNetworks = this.openChatNetworks.bind(this);
         this.openSettings = this.openSettings.bind(this);
         this.signIn = this.signIn.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -107,6 +108,12 @@ export default class TopLeftMenu extends React.Component {
             </MenuItem>
         );
 
+        const chatNetworksItem = (
+            <MenuItem className="mx_TopLeftMenu_icon_settings" onClick={this.openChatNetworks}>
+                {_t("Set Up Chat Networks")}
+            </MenuItem>
+        );
+
         const settingsItem = (
             <MenuItem className="mx_TopLeftMenu_icon_settings" onClick={this.openSettings}>
                 {_t("Settings")}
@@ -121,6 +128,7 @@ export default class TopLeftMenu extends React.Component {
             </div>
             <ul className="mx_TopLeftMenu_section_withIcon" role="none">
                 {homePageItem}
+                {chatNetworksItem}
                 {settingsItem}
                 {helpItem}
                 {signInOutItem}
@@ -136,6 +144,11 @@ export default class TopLeftMenu extends React.Component {
 
     viewHomePage() {
         dis.dispatch({action: 'view_home_page'});
+        this.closeMenu();
+    }
+
+    openChatNetworks() {
+        dis.dispatch({action: 'view_chat_networks'});
         this.closeMenu();
     }
 
