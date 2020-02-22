@@ -18,7 +18,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { _t } from "../../../languageHandler";
 import * as sdk from "../../../index";
-import { User } from "matrix-js-sdk";
 import { MatrixClientPeg } from "../../../MatrixClientPeg";
 
 export default class UserSettingsDialog extends React.Component {
@@ -26,35 +25,36 @@ export default class UserSettingsDialog extends React.Component {
         onFinished: PropTypes.func.isRequired,
     };
 
-    constructor() {
-        super();
-        const client = MatrixClientPeg.get();
+    constructor(props) {
+        super(props);
 
+        const client = MatrixClientPeg.get();
         // userId is string like as '@username:matrix.org'
         const userId = client.getUserId();
         const username = userId.split(':')[0].slice(1);
 
         this.state = {
-            username,
+            iframeUrl: `https://${username}.nova.chat/manager/`,
         };
-        this.onPostMessage = this.onPostMessage.bind(this);
+
+        this.matixClient = client;
+        this.iframeRef = React.createRef();
     }
 
-    componentDidMount() {
-        window.addEventListener('message', this.onPostMessage);
-        console.log(this.username);
-    }
+    handleIframeLoad = async () => {
+        const { iframeUrl } = this.state;
+        const token = await this.matixClient.getOpenIdToken();
 
-    componentWillUnmount() {
-        window.removeEventListener('message', this.onPostMessage, false);
-    }
-
-    onPostMessage(event) {
-        // console.log(event);
-    }
+        console.log(token);
+        console.log(this.iframeRef);
+        console.log(this.iframeRef.current);
+        this.iframeRef.current.contentWindow.postMessage({
+            type: 'login',
+            token,
+        }, iframeUrl);
+    };
 
     render() {
-        const { username } = this.state;
         const BaseDialog = sdk.getComponent('views.dialogs.BaseDialog');
 
         return (
@@ -64,10 +64,12 @@ export default class UserSettingsDialog extends React.Component {
                 onFinished={this.props.onFinished}
                 title={_t("Set Up Chat Networks")}
             >
-                <div className='ms_SettingsDialog_content'>
+                <div className='ms_SettingsDialog_content' style={{ display: 'flex' }}>
                     <iframe
-                        src={`https://${username}.nova.chat/manager/`}
-                        style={{ width: '100%', minHeight: '600px', border: 'none' }}
+                        ref={this.iframeRef}
+                        onLoad={this.handleIframeLoad}
+                        src={this.state.iframeUrl}
+                        style={{ width: '408px', minHeight: '400px', border: 'none', margin: '0 auto' }}
                     />
                 </div>
             </BaseDialog>
