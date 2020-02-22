@@ -45,9 +45,6 @@ export default class UserSettingsDialog extends React.Component {
         const { iframeUrl } = this.state;
         const token = await this.matixClient.getOpenIdToken();
 
-        console.log(token);
-        console.log(this.iframeRef);
-        console.log(this.iframeRef.current);
         this.iframeRef.current.contentWindow.postMessage({
             type: 'login',
             token,
