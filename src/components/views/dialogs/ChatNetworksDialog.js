@@ -66,7 +66,7 @@ export default class UserSettingsDialog extends React.Component {
                         ref={this.iframeRef}
                         onLoad={this.handleIframeLoad}
                         src={this.state.iframeUrl}
-                        style={{ width: '408px', minHeight: '400px', border: 'none', margin: '0 auto' }}
+                        style={{ width: '408px', minHeight: '600px', border: 'none', margin: '0 auto' }}
                     />
                 </div>
             </BaseDialog>
